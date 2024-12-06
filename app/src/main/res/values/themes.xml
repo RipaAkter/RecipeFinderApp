@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.RecipeFinder" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="postSplashScreenTheme">@style/Theme.RecipeFinder</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/recipe_finder_logo</item>
+    </style>
+
+</resources>
