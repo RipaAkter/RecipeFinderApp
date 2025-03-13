@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">RecipeFinder</string>
+    <string name="default_web_client_id">142000257856-8v8ovum4hvh4okagp38f21fk5p5l29cg.apps.googleusercontent.com</string>
+<!--    <string name="app_name">Dishcovery</string>-->
+    <string name="label_title_onboarding1">Search for recipes</string>
+    <string name="label_subtitle_onboarding1">Browse and fin any recipe you are looking for. Also you can search by the ingredient you like.</string>
+    <string name="label_title_onboarding2">save your liked recipes</string>
+    <string name="label_subtitle_onboarding2">Save all your favourite recipes and get it later locally.</string>
+    <string name="label_title_onboarding3">Add your week meal plan</string>
+    <string name="label_subtitle_onboarding3">Plan for the whole week, add the ingredients, browse recipes and add it easily and fast.</string>
+    <string name="label_skip">Skip</string>
+    <string name="label_next">Next</string>
+    <string name="label_lets_go">Lets go</string>
+</resources>
