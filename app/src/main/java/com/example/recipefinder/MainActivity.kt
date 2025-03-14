@@ -27,7 +27,6 @@ class MainActivity : ComponentActivity() {
                 MainScreen(navController = navController)
             }
         }
-        // TODO: commented out for now, there are random recipes in the datastore
-        //GetRandomRecipesWorker.enqueuePeriodicWork(this)
+        GetRandomRecipesWorker.enqueuePeriodicWork(this)
     }
 }
