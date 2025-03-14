@@ -43,7 +43,7 @@ class RecipeDataStore @Inject constructor(
         context.recipeDataStore
             .edit { preferences ->
                 val jsonString = gson.toJson(savedRecipes.plus(newRecipes))
-                preferences[stringPreferencesKey("random_recipes")] = jsonString
+                preferences[stringPreferencesKey("saved_recipes")] = jsonString
             }
     }
 
@@ -52,7 +52,7 @@ class RecipeDataStore @Inject constructor(
             .data
             .catch { emit(emptyPreferences()) }
             .map { preferences ->
-                val jsonString = preferences[stringPreferencesKey("random_recipes")] ?: ""
+                val jsonString = preferences[stringPreferencesKey("saved_recipes")] ?: ""
                 if (jsonString.isNotEmpty()) {
                     val type = object : TypeToken<List<Recipe>>() {}.type
                     gson.fromJson(jsonString, type)
@@ -129,7 +129,7 @@ class RecipeDataStore @Inject constructor(
         val allRecipes: List<Recipe>? = getRandomRecipes().first()
 
         if (allRecipes == null || allRecipes.none { it.id == recipe.id }) {
-            Log.e(TAG, "bookmarkRecipe: Recipe not found in the list")
+            saveRandomRecipes(listOf(recipe.copy(isBookmarked = true)))
         } else {
             val updatedRecipes = allRecipes.map { currentRecipe: Recipe ->
                 if (currentRecipe.id == recipe.id) {
@@ -152,7 +152,7 @@ class RecipeDataStore @Inject constructor(
     suspend fun updateAllRecipes(allRecipes: List<Recipe>) {
         context.recipeDataStore.edit { preferences ->
             val updatedRecipeJson = gson.toJson(allRecipes)
-            preferences[stringPreferencesKey("random_recipes")] = updatedRecipeJson
+            preferences[stringPreferencesKey("saved_recipes")] = updatedRecipeJson
         }
     }
 }

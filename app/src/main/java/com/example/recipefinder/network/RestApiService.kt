@@ -31,16 +31,6 @@ interface RestApiService {
     ): List<RecipeAnalyzedInstructionsItemVo>
 
     @ResponseFormat(Format.JSON)
-    @GET("/recipes/findByIngredients")
-    suspend fun findByIngredients(
-        @Query("ingredients") ingredients: String,
-        @Query("number") number: Int,
-        @Query("limitLicense") limitLicense: Boolean = true,
-        @Query("ranking") ranking: Int = 1,
-        @Query("ignorePantry") ignorePantry: Boolean = false
-    ): List<SearchRecipeByIngredientsResponseVo>
-
-    @ResponseFormat(Format.JSON)
     @GET("recipes/{id}/nutritionWidget.json")
     suspend fun getNutrients(
         @Path("id") id: Int,
@@ -48,12 +38,21 @@ interface RestApiService {
 
     @ResponseFormat(Format.JSON)
     @GET("recipes/complexSearch")
-    suspend fun searchRecipe(
+    suspend fun searchByMealType(
         @Query("query") query: String,
         @Query("type") type: String,
         @Query("maxReadyTime") maxReadyTime: Int,
         @Query("addRecipeInformation") addRecipeInformation: Boolean = true,
         @Query("includeIngredients") includeIngredients: String,
+        @Query("number") number: Int = 10,
+    ): SearchRecipesVo
+
+    @ResponseFormat(Format.JSON)
+    @GET("recipes/complexSearch")
+    suspend fun searchByIngredients(
+        @Query("maxReadyTime") maxReadyTime: Int,
+        @Query("includeIngredients") includeIngredients: String,
+        @Query("addRecipeInformation") addRecipeInformation: Boolean = true,
         @Query("number") number: Int = 10,
     ): SearchRecipesVo
 }

@@ -3,7 +3,6 @@ package com.example.recipefinder.data.repository.recipe
 import com.example.recipefinder.data.model.Recipe
 import com.example.recipefinder.data.model.RecipeAnalyzedInstructions
 import com.example.recipefinder.data.model.RecipeNutrient
-import com.example.recipefinder.data.model.SearchRecipeByIngredients
 import com.example.recipefinder.data.model.Tip
 import com.example.recipefinder.data.model.toInternalRecipeAnalyzedInstructionsItem
 import com.example.recipefinder.data.model.toRecipeNutrientInternalModel
@@ -12,11 +11,9 @@ import com.example.recipefinder.data.repository.user.UserRepository
 import com.example.recipefinder.datastore.RecipeDataStore
 import com.example.recipefinder.model.RecipeAnalyzedInstructionsItemVo
 import com.example.recipefinder.model.RecipeNutrientsVo
-import com.example.recipefinder.model.SearchRecipeByIngredientsResponseVo
 import com.example.recipefinder.model.SearchRecipesVo
 import com.example.recipefinder.model.toInternalRecipeModel
 import com.example.recipefinder.model.toInternalRecipesModel
-import com.example.recipefinder.model.toInternalSearchRecipesByIngredients
 import com.example.recipefinder.network.RestApiService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -42,10 +39,16 @@ class RecipeRepositoryImpl @Inject constructor(
         return recipe
     }
 
-    override suspend fun searchRecipesByIngredients(ingredients: String): List<SearchRecipeByIngredients> {
-        val response: List<SearchRecipeByIngredientsResponseVo> =
-            restApiService.findByIngredients(ingredients = ingredients, number = 10)
-        return response.toInternalSearchRecipesByIngredients()
+    override suspend fun searchRecipesByIngredients(
+        maxReadyTime: Int,
+        ingredients: String
+    ): List<Recipe> {
+        val response: SearchRecipesVo =
+            restApiService.searchByIngredients(
+                maxReadyTime = maxReadyTime,
+                includeIngredients = ingredients
+            )
+        return response.results.toInternalRecipesModel()
     }
 
     override suspend fun getAnalyzedInstructions(recipeId: Int): RecipeAnalyzedInstructions {
@@ -78,7 +81,7 @@ class RecipeRepositoryImpl @Inject constructor(
         maxReadyTime: Int,
         ingredients: String
     ): List<Recipe> {
-        val searchRecipesVo: SearchRecipesVo = restApiService.searchRecipe(
+        val searchRecipesVo: SearchRecipesVo = restApiService.searchByMealType(
             query = query,
             type = type,
             maxReadyTime = maxReadyTime,
